@@ -13,3 +13,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::importProfile() {
+
+}
+
+void MainWindow::exportProfile() {
+
+}
+

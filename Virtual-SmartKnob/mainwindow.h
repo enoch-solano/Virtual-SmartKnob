@@ -17,5 +17,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    void importProfile();
+    void exportProfile();
 };
 #endif // MAINWINDOW_H
