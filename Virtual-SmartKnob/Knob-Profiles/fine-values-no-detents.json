@@ -1,0 +1,9 @@
+{
+  "Detent Count" : 256,
+  "Starting Position" : 127,
+  "Distance between Detents" : 1,
+  "Detent Strength" : 0,
+  "Endstop Strength" : 1,
+  "Snap Point" : 1.1,
+  "Descriptor" : "Fine values\nNo Detents"
+}

@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Knob-Profiles/bounded-no-detents.json</file>
+        <file>Knob-Profiles/coarse-values-strong-detents.json</file>
+        <file>Knob-Profiles/coarse-values-weak-detents.json</file>
+        <file>Knob-Profiles/fine-values-no-detents.json</file>
+        <file>Knob-Profiles/fine-values-with-detents.json</file>
+        <file>Knob-Profiles/multi-rev-no-detents.json</file>
+        <file>Knob-Profiles/on-off-strong-detent.json</file>
+        <file>Knob-Profiles/return-to-center.json</file>
+        <file>Knob-Profiles/unbounded-no-detents.json</file>
+    </qresource>
+</RCC>

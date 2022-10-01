@@ -85,7 +85,14 @@
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QSpinBox" name="numPosSpinBox"/>
+               <widget class="QSpinBox" name="numPosSpinBox">
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+               </widget>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="minPosLabel">
@@ -95,7 +102,14 @@
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QSpinBox" name="minPosSpinBox"/>
+               <widget class="QSpinBox" name="minPosSpinBox">
+                <property name="minimum">
+                 <number>-999</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
               </item>
               <item row="2" column="0">
                <widget class="QLabel" name="maxPosLabel">
@@ -112,7 +126,14 @@
                </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QSpinBox" name="maxPosSpinBox"/>
+               <widget class="QSpinBox" name="maxPosSpinBox">
+                <property name="minimum">
+                 <number>-999</number>
+                </property>
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+               </widget>
               </item>
               <item row="3" column="1">
                <widget class="QSpinBox" name="endstopStrengthSpinBox"/>
@@ -125,7 +146,11 @@
                </widget>
               </item>
               <item row="4" column="1">
-               <widget class="QSpinBox" name="numRevsSpinBox"/>
+               <widget class="QSpinBox" name="numRevsSpinBox">
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -146,9 +171,6 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QSpinBox" name="detentDistSpinBox"/>
-              </item>
               <item row="1" column="0">
                <widget class="QLabel" name="snapPointLabel">
                 <property name="text">
@@ -157,7 +179,27 @@
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QDoubleSpinBox" name="snapPointDoubleSpinBox"/>
+               <widget class="QDoubleSpinBox" name="snapPointDoubleSpinBox">
+                <property name="maximum">
+                 <double>1.990000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.010000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="detentDistDoubleSpinBox">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>360.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

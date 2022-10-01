@@ -1,0 +1,9 @@
+{
+  "Detent Count" : 73,
+  "Starting Position" : 0,
+  "Distance between Detents" : 10,
+  "Detent Strength" : 0,
+  "Endstop Strength" : 1,
+  "Snap Point" : 1.1,
+  "Descriptor" : "Multi-rev\nNo Detents"
+}
