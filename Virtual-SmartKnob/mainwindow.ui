@@ -25,7 +25,7 @@
         <string>Profile Editor</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QGroupBox" name="profileGroupBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -140,14 +140,14 @@
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <item row="0" column="0">
-               <widget class="QLabel" name="posWidthLabel">
+               <widget class="QLabel" name="detentDistLabel">
                 <property name="text">
-                 <string>Position Width (degrees):</string>
+                 <string>Distance between Detents (degrees):</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QSpinBox" name="posWidthSpinBox"/>
+               <widget class="QSpinBox" name="detentDistSpinBox"/>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="snapPointLabel">
@@ -165,23 +165,48 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QDial" name="dial">
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="profileKnobGroupBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="invertedAppearance">
-           <bool>false</bool>
+          <property name="title">
+           <string/>
           </property>
-          <property name="wrapping">
-           <bool>false</bool>
-          </property>
-          <property name="notchesVisible">
-           <bool>true</bool>
-          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QDial" name="profileKnob">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="wrapping">
+              <bool>false</bool>
+             </property>
+             <property name="notchesVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="notToScaleLabel">
+             <property name="text">
+              <string>(Not to scale)</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -190,6 +215,15 @@
        <attribute name="title">
         <string>SmartKnob Emulator</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QDial" name="emulatorKnob">
+          <property name="notchesVisible">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

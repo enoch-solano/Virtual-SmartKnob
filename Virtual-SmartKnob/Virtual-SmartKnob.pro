@@ -15,6 +15,7 @@ SOURCES += \
 
 HEADERS += \
     dependencies/darkstyle/darkstyle.h \
+    knob_data.h \
     mainwindow.h
 
 FORMS += \
