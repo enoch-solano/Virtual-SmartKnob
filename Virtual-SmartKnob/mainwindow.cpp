@@ -139,9 +139,6 @@ void MainWindow::parseProfile(QJsonDocument &doc) {
     ui->detentStrengthSpinBox->setValue(detentStrength);
     ui->endstopStrengthSpinBox->setValue(endstopStrength);
 
-    int numRev = computeNumRevs(detentDist, detentCount);
-    ui->numRevsSpinBox->setValue(numRev);
-
     double snapPoint = obj[SNAP_POINT_].toDouble();
     ui->snapPointDoubleSpinBox->setValue(snapPoint);
 
@@ -180,7 +177,6 @@ void MainWindow::numPosValueChanged(int val) {
 
     ui->emulatorKnob->setMaximum(newMax);
     ui->profileKnob->setMaximum(newMax);
-
 }
 
 void MainWindow::minPosValueChanged(int val) {
