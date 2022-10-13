@@ -25,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->profileKnob, SIGNAL(valueChanged(int)), this, SLOT(knobValueChanged(int)));
     connect(ui->emulatorKnob, SIGNAL(valueChanged(int)), this, SLOT(knobValueChanged(int)));
+
+    connect(ui->detentDistDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(detentDistValueChanged(double)));
+
+    connect(ui->numPosSpinBox, SIGNAL(valueChanged(int)), this, SLOT(numPosValueChanged(int)));
+    connect(ui->minPosSpinBox, SIGNAL(valueChanged(int)), this, SLOT(minPosValueChanged(int)));
+    connect(ui->maxPosSpinBox, SIGNAL(valueChanged(int)), this, SLOT(maxPosValueChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -92,25 +98,38 @@ int MainWindow::computeNumRevs(double dist, int count) {
     return int(ceil((dist * (count-1)) / 360.0));
 }
 
+int MainWindow::computeMax(int min, int count) {
+    return min + count - 1;
+}
+
+int MainWindow::computeCount(int min, int max) {
+    return max + 1 - min;
+}
+
 void MainWindow::setKnob(QDial *dial, int val, int min, int count) {
     dial->setMinimum(min);
     dial->setMaximum(min + count - 1);
     dial->setValue(val);
 }
 
+void MainWindow::setSpinBoxValue(QSpinBox *spinbox, int val) {
+    const QSignalBlocker blocker(spinbox);
+    spinbox->setValue(val);
+}
+
 void MainWindow::parseProfile(QJsonDocument &doc) {
     QJsonObject obj = doc.object();
 
-    int detCount = obj[DETENT_COUNT_].toInt();
+    int detentCount = obj[DETENT_COUNT_].toInt();
     int startPos = obj[STARTING_POSITION_].toInt();
     int startVal = obj[STARTING_VALUE_].toInt();
 
-    setKnob(ui->profileKnob, startPos, startVal, detCount);
-    setKnob(ui->emulatorKnob, startPos, startVal, detCount);
+    setKnob(ui->profileKnob, startPos, startVal, detentCount);
+    setKnob(ui->emulatorKnob, startPos, startVal, detentCount);
 
-    ui->numPosSpinBox->setValue(detCount);
-    ui->minPosSpinBox->setValue(startVal);
-    ui->maxPosSpinBox->setValue(startVal + detCount - 1);
+    setSpinBoxValue(ui->numPosSpinBox, detentCount);
+    setSpinBoxValue(ui->minPosSpinBox, startVal);
+    setSpinBoxValue(ui->maxPosSpinBox, computeMax(startVal, detentCount));
 
     double detentDist = obj[DETENT_DISTANCE_].toDouble();
     int detentStrength = obj[DETENT_STRENGTH_].toInt();
@@ -120,7 +139,7 @@ void MainWindow::parseProfile(QJsonDocument &doc) {
     ui->detentStrengthSpinBox->setValue(detentStrength);
     ui->endstopStrengthSpinBox->setValue(endstopStrength);
 
-    int numRev = computeNumRevs(detentDist, detCount);
+    int numRev = computeNumRevs(detentDist, detentCount);
     ui->numRevsSpinBox->setValue(numRev);
 
     double snapPoint = obj[SNAP_POINT_].toDouble();
@@ -140,6 +159,50 @@ void MainWindow::knobValueChanged(int val) {
 
     ui->profileKnobValueLabel->setText(QString("Current Value: %1").arg(val));
     ui->emulatorKnobValueLabel->setText(QString("Current Value: %1").arg(val));
+}
+
+void MainWindow::setNumRevs(QSpinBox *spinbox, double dist, int count) {
+    const QSignalBlocker blocker(spinbox);
+    spinbox->setValue(computeNumRevs(dist, count));
+}
+
+void MainWindow::detentDistValueChanged(double detentDist) {
+    setNumRevs(ui->numRevsSpinBox, detentDist, ui->numPosSpinBox->value());
+}
+
+void MainWindow::numPosValueChanged(int val) {
+    int detentCount = val;
+    double detentDist = ui->detentDistDoubleSpinBox->value();
+    setNumRevs(ui->numRevsSpinBox, detentDist, detentCount);
+
+    int newMax = computeMax(ui->minPosSpinBox->value(), val);
+    setSpinBoxValue(ui->maxPosSpinBox, newMax);
+
+    ui->emulatorKnob->setMaximum(newMax);
+    ui->profileKnob->setMaximum(newMax);
+
+}
+
+void MainWindow::minPosValueChanged(int val) {
+    int detentCount = computeCount(val, ui->maxPosSpinBox->value());
+    double detentDist = ui->detentDistDoubleSpinBox->value();
+    setNumRevs(ui->numRevsSpinBox, detentDist, detentCount);
+
+    setSpinBoxValue(ui->numPosSpinBox, detentCount);
+
+    ui->emulatorKnob->setMinimum(val);
+    ui->profileKnob->setMinimum(val);
+}
+
+void MainWindow::maxPosValueChanged(int val) {
+    int detentCount = computeCount(ui->minPosSpinBox->value(), val);
+    double detentDist = ui->detentDistDoubleSpinBox->value();
+    setNumRevs(ui->numRevsSpinBox, detentDist, detentCount);
+
+    setSpinBoxValue(ui->numPosSpinBox, detentCount);
+
+    ui->emulatorKnob->setMaximum(val);
+    ui->profileKnob->setMaximum(val);
 }
 
 void MainWindow::importProfile() {

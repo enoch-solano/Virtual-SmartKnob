@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "knob_data.h"
 #include "qdial.h"
+#include "qspinbox.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -37,8 +38,12 @@ private:
     void parseProfile(QJsonDocument &doc);
 
     void setKnob(QDial *dial, int val, int min, int count);
+    void setSpinBoxValue(QSpinBox *spinbox, int val);
+    void setNumRevs(QSpinBox *spinbox, double dist, int count);
 
     inline int computeNumRevs(double dist, int count);
+    inline int computeMax(int min, int count);
+    inline int computeCount(int min, int max);
 
     void exportAsJSON();
 
@@ -49,5 +54,10 @@ private slots:
     void exportProfile();
 
     void knobValueChanged(int);
+    void detentDistValueChanged(double);
+
+    void numPosValueChanged(int);
+    void minPosValueChanged(int);
+    void maxPosValueChanged(int);
 };
 #endif // MAINWINDOW_H
