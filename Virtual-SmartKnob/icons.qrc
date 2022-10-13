@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/knobs/dial_512.png</file>
+    </qresource>
+</RCC>

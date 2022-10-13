@@ -6,12 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1020</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Virtual SmartKnob GUI</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>512</width>
+    <height>512</height>
+   </size>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -118,13 +124,6 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="endstopStrengthLabel">
-                <property name="text">
-                 <string>Endstop Strength:</string>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="1">
                <widget class="QSpinBox" name="maxPosSpinBox">
                 <property name="minimum">
@@ -132,6 +131,13 @@
                 </property>
                 <property name="maximum">
                  <number>999</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="endstopStrengthLabel">
+                <property name="text">
+                 <string>Endstop Strength:</string>
                 </property>
                </widget>
               </item>
@@ -171,6 +177,19 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="detentDistDoubleSpinBox">
+                <property name="decimals">
+                 <number>4</number>
+                </property>
+                <property name="maximum">
+                 <double>360.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
+                </property>
+               </widget>
+              </item>
               <item row="1" column="0">
                <widget class="QLabel" name="snapPointLabel">
                 <property name="text">
@@ -188,16 +207,24 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QDoubleSpinBox" name="detentDistDoubleSpinBox">
-                <property name="decimals">
-                 <number>4</number>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="descriptorLineEdit_2">
+                <property name="placeholderText">
+                 <string>Profile Descriptor (line 2)</string>
                 </property>
-                <property name="maximum">
-                 <double>360.000000000000000</double>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="descriptorLineEdit_1">
+                <property name="placeholderText">
+                 <string>Profile Descriptor (line 1)</string>
                 </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="descriptorLabel">
+                <property name="text">
+                 <string>Descriptor:</string>
                 </property>
                </widget>
               </item>
@@ -219,6 +246,16 @@
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
+           <item row="2" column="0">
+            <widget class="QLabel" name="notToScaleLabel">
+             <property name="text">
+              <string>(Not to Scale)</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QDial" name="profileKnob">
              <property name="sizePolicy">
@@ -239,9 +276,15 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="notToScaleLabel">
+            <widget class="QLabel" name="profileKnobValueLabel">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
-              <string>(Not to scale)</string>
+              <string>Current Value: 0</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -258,10 +301,42 @@
         <string>SmartKnob Emulator</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
+        <item row="2" column="0">
+         <widget class="QLabel" name="notToScaleLabel_2">
+          <property name="text">
+           <string>(Not to Scale)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QDial" name="emulatorKnob">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="notchesVisible">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="emulatorKnobValueLabel">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Current Value: 0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -276,7 +351,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1020</width>
      <height>21</height>
     </rect>
    </property>
@@ -295,7 +370,7 @@
     <string>Import Profile</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Ctrl+L</string>
    </property>
   </action>
   <action name="actionExport_Profile">
@@ -304,14 +379,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionToggle_Darkmode">
-   <property name="text">
-    <string>Toggle Darkmode</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

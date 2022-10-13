@@ -3,12 +3,14 @@
 
 #include <QMainWindow>
 #include "knob_data.h"
+#include "qdial.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
 #include <QFileDialog>
+#include <QRegularExpression>
 
 
 QT_BEGIN_NAMESPACE
@@ -32,13 +34,20 @@ private:
 
     bool isValidProfile(QJsonDocument &doc);
     bool validateProfile(QJsonDocument &doc);
+    void parseProfile(QJsonDocument &doc);
+
+    void setKnob(QDial *dial, int val, int min, int count);
+
+    inline int computeNumRevs(double dist, int count);
 
     void exportAsJSON();
 
-    QByteArray promptUserForFile();
+    QByteArray promptUserForProfileJSONFile();
 
 private slots:
     void importProfile();
     void exportProfile();
+
+    void knobValueChanged(int);
 };
 #endif // MAINWINDOW_H

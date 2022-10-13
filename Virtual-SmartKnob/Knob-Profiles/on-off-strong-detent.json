@@ -1,9 +1,10 @@
 {
-  "Detent Count" : 2,
-  "Starting Position" : 0,
-  "Distance between Detents" : 60,
-  "Detent Strength" : 1,
-  "Endstop Strength" : 1,
-  "Snap Point" : 0.55,
-  "Descriptor" : "On/off\nStrong Detents"
+  "Detent Count": 2,
+  "Starting Value": 0,
+  "Starting Position": 0,
+  "Distance between Detents": 60,
+  "Detent Strength": 1,
+  "Endstop Strength": 1,
+  "Snap Point": 0.55,
+  "Descriptor": "On/off\nStrong Detents"
 }

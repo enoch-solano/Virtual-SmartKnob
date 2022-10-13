@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setWindowIcon(QIcon("://icons/knobs/dial_512.png"));
 //    a.setStyle(new DarkStyle);    // uncomment for darkstyle
 
     MainWindow w;

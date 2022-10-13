@@ -1,5 +1,6 @@
 {
-  "Detent Count" : 11,
+  "Detent Count": 11,
+  "Starting Value" : 0,
   "Starting Position" : 0,
   "Distance between Detents" : 10,
   "Detent Strength" : 0,

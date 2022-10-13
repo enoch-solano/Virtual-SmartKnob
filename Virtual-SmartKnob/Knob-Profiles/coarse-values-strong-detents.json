@@ -1,9 +1,10 @@
 {
-  "Detent Count" : 32,
-  "Starting Position" : 0,
-  "Distance between Detents" : 8.225806452,
-  "Detent Strength" : 2,
-  "Endstop Strength" : 1,
-  "Snap Point" : 1.1,
-  "Descriptor" : "Coarse Values\nStrong Detents"
+  "Detent Count": 32,
+  "Starting Value": 0,
+  "Starting Position": 0,
+  "Distance between Detents": 8.225806452,
+  "Detent Strength": 2,
+  "Endstop Strength": 1,
+  "Snap Point": 1.1,
+  "Descriptor": "Coarse Values\nStrong Detents"
 }

@@ -16,7 +16,8 @@ SOURCES += \
 HEADERS += \
     dependencies/darkstyle/darkstyle.h \
     knob_data.h \
-    mainwindow.h
+    mainwindow.h \
+    utils.h
 
 FORMS += \
     mainwindow.ui
@@ -28,4 +29,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Knob-Profiles.qrc \
-    darkstyle.qrc
+    darkstyle.qrc \
+    icons.qrc

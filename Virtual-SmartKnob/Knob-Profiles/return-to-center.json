@@ -1,9 +1,10 @@
 {
-  "Detent Count" : 1,
-  "Starting Position" : 0,
-  "Distance between Detents" : 60,
-  "Detent Strength" : 0.01,
-  "Endstop Strength" : 0.6,
-  "Snap Point" : 1.1,
-  "Descriptor" : "Return-to-Center"
+  "Detent Count": 1,
+  "Starting Value": 0,
+  "Starting Position": 0,
+  "Distance between Detents": 60,
+  "Detent Strength": 0.01,
+  "Endstop Strength": 0.6,
+  "Snap Point": 1.1,
+  "Descriptor": "Return-to-Center"
 }
