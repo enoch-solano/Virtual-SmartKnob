@@ -38,61 +38,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-bool MainWindow::isValidProfile(QJsonDocument &doc) {
-    return validateProfile(doc);
-}
-
-bool MainWindow::validateProfile(QJsonDocument &doc) {
-    QJsonObject obj = doc.object();
-
-    for (auto const &key : necessaryProfileKeys) {
-        if (!obj.contains(key)) {
-            qDebug() << "missing necessary key:" << key;
-            return false;
-        }
-    }
-
-    for (auto const &key : doubleProfileKeys) {
-        if (!obj[key].isDouble()) {
-            qDebug() << "missing double key:" << key;
-            return false;
-        }
-    }
-
-    for (auto const &key : stringProfileKeys) {
-        if (!obj[key].isString()) {
-            qDebug() << "missing string key:" << key;
-            return false;
-        }
-    }
-
-    return true;
-}
-
-QByteArray MainWindow::promptUserForProfileJSONFile() {
-    const QString DIR_NAME = "../Virtual-SmartKnob/Knob-Profiles/";
-    const QFileInfo DIR(DIR_NAME);
-
-    QString dir = DIR.exists() && DIR.isDir() ? DIR_NAME : "/";
-    QString filename = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Knob Profile"),
-                                                    dir,
-                                                    tr("JSON Files (*.json *.JSON)"));
-
-    if (!QFile::exists(filename)) {
-        return "";
-    }
-
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return "";
-    }
-
-    QByteArray filetext = file.readAll();
-    file.close();
-
-    return filetext;
-}
+/************************************************************************/
+/*********************** COMPUTE HELPER FUNCS ***************************/
+/************************************************************************/
 
 int MainWindow::computeNumRevs(double dist, int count) {
     return int(ceil((dist * (count-1)) / 360.0));
@@ -106,6 +54,11 @@ int MainWindow::computeCount(int min, int max) {
     return max + 1 - min;
 }
 
+
+/************************************************************************/
+/*********************** SETTER FUNCS ***********************************/
+/************************************************************************/
+
 void MainWindow::setKnob(QDial *dial, int val, int min, int count) {
     dial->setMinimum(min);
     dial->setMaximum(min + count - 1);
@@ -117,35 +70,15 @@ void MainWindow::setSpinBoxValue(QSpinBox *spinbox, int val) {
     spinbox->setValue(val);
 }
 
-void MainWindow::parseProfile(QJsonDocument &doc) {
-    QJsonObject obj = doc.object();
-
-    int detentCount = obj[DETENT_COUNT_].toInt();
-    int startPos = obj[STARTING_POSITION_].toInt();
-    int startVal = obj[STARTING_VALUE_].toInt();
-
-    setKnob(ui->profileKnob, startPos, startVal, detentCount);
-    setKnob(ui->emulatorKnob, startPos, startVal, detentCount);
-
-    setSpinBoxValue(ui->numPosSpinBox, detentCount);
-    setSpinBoxValue(ui->minPosSpinBox, startVal);
-    setSpinBoxValue(ui->maxPosSpinBox, computeMax(startVal, detentCount));
-
-    double detentDist = obj[DETENT_DISTANCE_].toDouble();
-    int detentStrength = obj[DETENT_STRENGTH_].toInt();
-    int endstopStrength = obj[ENDSTOP_STRENGTH_].toInt();
-
-    ui->detentDistDoubleSpinBox->setValue(detentDist);
-    ui->detentStrengthSpinBox->setValue(detentStrength);
-    ui->endstopStrengthSpinBox->setValue(endstopStrength);
-
-    double snapPoint = obj[SNAP_POINT_].toDouble();
-    ui->snapPointDoubleSpinBox->setValue(snapPoint);
-
-    QVector<QString> descriptor = obj[DESCRIPTOR_].toString().split(QRegularExpression("\n"));
-    ui->descriptorLineEdit_1->setText(descriptor[0]);
-    ui->descriptorLineEdit_2->setText(descriptor.size() > 1 ? descriptor[1] : "");
+void MainWindow::setNumRevs(QSpinBox *spinbox, double dist, int count) {
+    const QSignalBlocker blocker(spinbox);
+    spinbox->setValue(computeNumRevs(dist, count));
 }
+
+
+/************************************************************************/
+/*********************** MAINWIN SLOTS***********************************/
+/************************************************************************/
 
 void MainWindow::knobValueChanged(int val) {
     {
@@ -156,11 +89,6 @@ void MainWindow::knobValueChanged(int val) {
 
     ui->profileKnobValueLabel->setText(QString("Current Value: %1").arg(val));
     ui->emulatorKnobValueLabel->setText(QString("Current Value: %1").arg(val));
-}
-
-void MainWindow::setNumRevs(QSpinBox *spinbox, double dist, int count) {
-    const QSignalBlocker blocker(spinbox);
-    spinbox->setValue(computeNumRevs(dist, count));
 }
 
 void MainWindow::detentDistValueChanged(double detentDist) {
@@ -226,6 +154,126 @@ void MainWindow::exportProfile() {
     exportAsJSON();
 }
 
-void MainWindow::exportAsJSON() {
+/************************************************************************/
+/*********************** PROFILE PARSING ********************************/
+/************************************************************************/
 
+void MainWindow::parseProfile(QJsonDocument &doc) {
+    QJsonObject obj = doc.object();
+
+    int detentCount = obj[DETENT_COUNT_].toInt();
+    int startPos = obj[STARTING_POSITION_].toInt();
+    int startVal = obj[STARTING_VALUE_].toInt();
+
+    setKnob(ui->profileKnob, startPos, startVal, detentCount);
+    setKnob(ui->emulatorKnob, startPos, startVal, detentCount);
+
+    setSpinBoxValue(ui->numPosSpinBox, detentCount);
+    setSpinBoxValue(ui->minPosSpinBox, startVal);
+    setSpinBoxValue(ui->maxPosSpinBox, computeMax(startVal, detentCount));
+
+    double detentDist = obj[DETENT_DISTANCE_].toDouble();
+    int detentStrength = obj[DETENT_STRENGTH_].toInt();
+    int endstopStrength = obj[ENDSTOP_STRENGTH_].toInt();
+
+    ui->detentDistDoubleSpinBox->setValue(detentDist);
+    ui->detentStrengthSpinBox->setValue(detentStrength);
+    ui->endstopStrengthSpinBox->setValue(endstopStrength);
+
+    double snapPoint = obj[SNAP_POINT_].toDouble();
+    ui->snapPointDoubleSpinBox->setValue(snapPoint);
+
+    QVector<QString> descriptor = obj[DESCRIPTOR_].toString().split(QRegularExpression("\n"));
+    ui->descriptorLineEdit_1->setText(descriptor[0]);
+    ui->descriptorLineEdit_2->setText(descriptor.size() > 1 ? descriptor[1] : "");
+}
+
+QByteArray MainWindow::promptUserForProfileJSONFile() {
+    const QString DIR_NAME = "../Virtual-SmartKnob/Knob-Profiles/";
+    const QFileInfo DIR(DIR_NAME);
+
+    QString dir = DIR.exists() && DIR.isDir() ? DIR_NAME : "/";
+    QString filename = QFileDialog::getOpenFileName(this,
+                                                    tr("Open Knob Profile"),
+                                                    dir,
+                                                    tr("JSON Files (*.json *.JSON)"));
+
+    if (!QFile::exists(filename)) {
+        return "";
+    }
+
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return "";
+    }
+
+    QByteArray filetext = file.readAll();
+    file.close();
+
+    return filetext;
+}
+
+QByteArray MainWindow::profileToJSON() {
+    QJsonObject obj;
+    obj[DETENT_COUNT_] = ui->numPosSpinBox->value();
+    obj[STARTING_POSITION_] = ui->profileKnob->value();
+    obj[STARTING_VALUE_] = ui->minPosSpinBox->value();
+    obj[DETENT_DISTANCE_] = ui->detentDistDoubleSpinBox->value();
+    obj[DETENT_STRENGTH_] = ui->detentStrengthSpinBox->value();
+    obj[ENDSTOP_STRENGTH_] = ui->endstopStrengthSpinBox->value();
+    obj[SNAP_POINT_] = ui->endstopStrengthSpinBox->value();
+    obj[DESCRIPTOR_] = ui->descriptorLineEdit_1->text() + (ui->descriptorLineEdit_2->text().isEmpty() ? "" : "/n" + ui->descriptorLineEdit_2->text());
+
+    QJsonDocument doc(obj);
+    return doc.toJson();
+}
+
+void MainWindow::exportAsJSON() {
+    const QString DIR_NAME = "../Virtual-SmartKnob/Knob-Profiles/";
+    const QFileInfo DIR(DIR_NAME);
+
+    QString dir = DIR.exists() && DIR.isDir() ? DIR_NAME : "/";
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    tr("Open Knob Profile"),
+                                                    dir,
+                                                    tr("JSON Files (*.json *.JSON)"));
+
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return;
+    }
+
+    file.write(profileToJSON());
+    file.close();
+}
+
+bool MainWindow::isValidProfile(QJsonDocument &doc) {
+    return validateProfile(doc);
+}
+
+bool MainWindow::validateProfile(QJsonDocument &doc) {
+    QJsonObject obj = doc.object();
+
+    for (auto const &key : necessaryProfileKeys) {
+        if (!obj.contains(key)) {
+            qDebug() << "missing necessary key:" << key;
+            return false;
+        }
+    }
+
+    for (auto const &key : doubleProfileKeys) {
+        if (!obj[key].isDouble()) {
+            qDebug() << "missing double key:" << key;
+            return false;
+        }
+    }
+
+    for (auto const &key : stringProfileKeys) {
+        if (!obj[key].isString()) {
+            qDebug() << "missing string key:" << key;
+            return false;
+        }
+    }
+
+    return true;
 }

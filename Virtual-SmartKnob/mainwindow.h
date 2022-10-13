@@ -3,13 +3,15 @@
 
 #include <QMainWindow>
 #include "knob_data.h"
-#include "qdial.h"
-#include "qspinbox.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
+#include <QDial>
+#include <QSpinBox>
+
+#include <QMessageBox>
 #include <QFileDialog>
 #include <QRegularExpression>
 
@@ -46,6 +48,7 @@ private:
     inline int computeCount(int min, int max);
 
     void exportAsJSON();
+    QByteArray profileToJSON();
 
     QByteArray promptUserForProfileJSONFile();
 
